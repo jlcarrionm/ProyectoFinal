@@ -1,0 +1,58 @@
+<!-- <app-editar-alumnos-dialog (eventoSalidaAlumno)="actualizarAlumnoPadre($event)"></app-editar-alumnos-dialog> -->
+
+<table mat-table [dataSource]="dataSource">
+    <!-- Columna de nombre -->
+    <ng-container matColumnDef="nombre">
+        <th mat-header-cell *matHeaderCellDef appTamanoTitulos>Nombre y Apellido</th>
+        <td mat-cell *matCellDef="let element">{{ element | concatenarNombreApellido }}</td>
+    </ng-container>
+
+
+    <ng-container matColumnDef="apellido">
+        <th mat-header-cell *matHeaderCellDef>Apellido</th>
+        <td mat-cell *matCellDef="let element">{{ element.apellido }}</td>
+    </ng-container>
+    <!-- Columna de email -->
+    <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef appTamanoTitulos>Email</th>
+        <td mat-cell *matCellDef="let element">{{ element.email }}</td>
+    </ng-container>
+
+    <!-- Columna de ci -->
+    <ng-container matColumnDef="ci">
+        <th mat-header-cell *matHeaderCellDef appTamanoTitulos>Ci</th>
+        <td mat-cell *matCellDef="let element">{{ element.ci }}</td>
+    </ng-container>
+
+    <!-- Columna de Domicilio -->
+    <ng-container matColumnDef="domicilio">
+        <th mat-header-cell *matHeaderCellDef appTamanoTitulos>Domicilio</th>
+        <td mat-cell *matCellDef="let element">{{ element.domicilio }}</td>
+    </ng-container>
+
+    <!-- Columna de telefono -->
+    <ng-container matColumnDef="telefono">
+        <th mat-header-cell *matHeaderCellDef appTamanoTitulos>Telefono</th>
+        <td mat-cell *matCellDef="let element">{{ element.telefono }}</td>
+    </ng-container>
+
+
+    <!-- Columna de acciones -->
+    <ng-container matColumnDef="acciones">
+        <th mat-header-cell *matHeaderCellDef appTamanoTitulos>Acciones</th>
+        <td mat-cell *matCellDef="let element">
+            <button mat-icon-button color="primary" (click)="abrirModal(element)">
+            <mat-icon>edit</mat-icon>
+        </button>
+            <button mat-icon-button color="warn" (click)="eliminarRegistro(element.ci)">
+            <mat-icon>delete</mat-icon>
+        </button>
+        </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+    <tr mat-row *matRowDef="let row; columns: columnas"></tr>
+
+
+</table>
+<router-outlet></router-outlet>

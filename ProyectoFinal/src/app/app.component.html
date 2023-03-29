@@ -1,0 +1,31 @@
+<mat-toolbar color="primary" class="example-toolbar">
+    <button mat-icon-button (click)="snav.toggle()">
+    <mat-icon>menu</mat-icon>
+  </button>
+    <h1 class="example-app-name">Lista de Estudiantes</h1>
+    <span class="example-spacer"></span>
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
+    <mat-icon>account_circle</mat-icon>
+  </button>
+</mat-toolbar>
+
+<mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
+    <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
+        <mat-nav-list>
+            <!--  <mat-list-item (click)="redigirAlumnos()">Alumnos</mat-list-item> -->
+            <mat-list-item routerLink="alumnos/listaralumnos">Alumnos</mat-list-item>
+            <mat-list-item routerLink="cursos/listarcursos">Cursos</mat-list-item>
+            <mat-list-item routerLink="auth">Autenticacion</mat-list-item>
+            <a mat-button (click)="logout()">Logut</a>
+
+
+
+            <!-- <mat-list-item>Profesor</mat-list-item> -->
+        </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <!-- <app-content></app-content> -->
+        <!--  <app-lista-cursos></app-lista-cursos> -->
+        <router-outlet></router-outlet>
+    </mat-sidenav-content>
+</mat-sidenav-container>

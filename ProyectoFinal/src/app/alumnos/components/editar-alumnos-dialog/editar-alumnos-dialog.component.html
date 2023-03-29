@@ -1,0 +1,54 @@
+<h1 mat-dialog-title>Editar Alumno</h1>
+<div mat-dialog-content>
+    <mat-form-field appearance="fill">
+        <mat-label>Nombre</mat-label>
+        <input matInput [(ngModel)]="data.nombre">
+
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+        <mat-label>Apellido</mat-label>
+        <input matInput [(ngModel)]="data.apellido">
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+        <mat-label>Email</mat-label>
+        <input matInput [(ngModel)]="data.email">
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+        <mat-label>Cedula</mat-label>
+        <input matInput [(ngModel)]="data.ci">
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+        <mat-label>Domicilio</mat-label>
+        <input matInput [(ngModel)]="data.domicilio">
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+        <mat-label>Telefono</mat-label>
+        <input matInput [(ngModel)]="data.telefono">
+    </mat-form-field>
+
+    <!--  <form [formGroup]="formulario">
+        <div class="row">
+
+            <input type="text" placeholder="Nombre" formControlName="nombre">
+        </div>
+        <div class="row">
+            <input type="text" placeholder="Apellido" formControlName="apellido">
+        </div>
+        <div class="row">
+            <input type="text" placeholder="Email" formControlName="email">
+        </div>
+        <div class="row">
+            <input type="text" placeholder="Ci" formControlName="ci">
+        </div>
+        <div class="row">
+            <input type="text" placeholder="Domicilio" formControlName="domicilio">
+        </div>
+        <div class="row">
+            <input type="text" placeholder="Telefono" formControlName="telefono">
+        </div>
+    </form>
+</div> -->
+    <div mat-dialog-actions>
+        <button mat-button (click)="onNoClick()">No Thanks</button>
+        <button mat-flat-button cdkFocusInitial (click)="editar()">Editar</button>
+    </div>
