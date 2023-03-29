@@ -1,8 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { Observable, Subscription, takeUntil, Subject, from, map, of, filter, mergeMap, interval } from 'rxjs';
 
 import { Cursos } from '../../../models/cursos';
 import { CursoService } from '../../services/cursos.service';
+import { AppState } from '../../../core/state/state/app.state';
+import { cargarCursos, cursosCargados } from 'src/app/core/state/state/cursos.actions';
+import { selectorCargandoCursos, selectorCursosCargados } from 'src/app/core/state/state/cursos.selectors';
 
 @Component({
   selector: 'app-lista-cursos',
@@ -17,7 +21,7 @@ export class ListaCursosComponent implements OnInit{
   private destroy$ = new Subject<any>();
   comision: string = '';
   profesor: string = '';
-
+  cargando$!: Observable<Boolean>;
 
   private myArrayOf$!: Observable<Cursos[]>;
 
@@ -25,15 +29,22 @@ export class ListaCursosComponent implements OnInit{
     ); */
 
   constructor(
-    private cursoService: CursoService
+    private cursoService: CursoService,
+    private store: Store<AppState>
   ){
 
   }
 
   ngOnInit() {
-    this.cursos$ = this.cursoService.obtenerCursosObservable$();
+    this.cargando$ = this.store.select(selectorCargandoCursos);
 
+    this.store.dispatch(cargarCursos());
+   // this.cursos$ = this.cursoService.obtenerCursosObservable$();
+   this.cursoService.obtenerCursosObservable$().subscribe((cursos: Cursos[]) => {
+    this.store.dispatch(cursosCargados({ cursos: cursos }));
+  });
 
+  this.cursos$ = this.store.select(selectorCursosCargados);
 
    /*  this.suscripcion = this.cursos$
       .pipe(takeUntil(this.destroy$))
@@ -50,7 +61,7 @@ export class ListaCursosComponent implements OnInit{
     }) */
 
    /*  from(this.cursos).subscribe((cursos)=> {
-      console.log('Obtenido desde el From',cursos)
+     // console.log('Obtenido desde el From',cursos)
     })
  */
 
@@ -94,7 +105,7 @@ export class ListaCursosComponent implements OnInit{
 
     this.cursos$.subscribe((value) => {
 
-      console.log('busqueda',value)
+     // console.log('busqueda',value)
     });
 
    }

@@ -106,7 +106,7 @@ export class CursoService {
   }
 
   busquedaCurso(id: string): Observable<Cursos[]>{
-    console.log('variable', id)
+    //console.log('variable', id)
     return this.http.get<Cursos[]>(`${env.apiURL}/cursos/${id}`, {
       headers: new HttpHeaders({
         'curso': 'Angular'
@@ -127,7 +127,7 @@ export class CursoService {
             return cursos.filter((curso: Cursos) => curso.comision === cursoVariable)
           })
         ).subscribe((cursos)=>{
-          console.log("Obtenido desde el OF, filtrado por comision", cursos);
+         // console.log("Obtenido desde el OF, filtrado por comision", cursos);
           resolve(cursos);
           //this.cursos$.next(cursos);
         })

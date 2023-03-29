@@ -18,7 +18,7 @@ export class SesionService {
   }
 
   crearSesion(sesion: Sesion){
-    console.log('Creando sesion con el objeto', sesion);
+   // console.log('Creando sesion con el objeto', sesion);
     this.sesion$.next(sesion);
   }
 

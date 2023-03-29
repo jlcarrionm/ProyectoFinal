@@ -23,6 +23,8 @@ import { NoEncontradoComponent } from './core/components/no-encontrado/no-encont
 import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
 import { InicioComponent } from './core/components/inicio/inicio.component';
+import { StoreModule } from '@ngrx/store';
+import { ROOT_REDUCERS } from './core/state/state/app.state';
 
 
 
@@ -39,7 +41,8 @@ import { InicioComponent } from './core/components/inicio/inicio.component';
     FormsModule,
     AppRountingModule,
     CoreModule,
-    SharedModule
+    SharedModule,
+    StoreModule.forRoot(ROOT_REDUCERS)
   ],
   providers: [
 

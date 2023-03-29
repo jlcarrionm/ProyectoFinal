@@ -56,7 +56,7 @@ export class EditarAlumnosDialogComponent {
    console.log('editarAlumno',alumno);} */
 
    editar(){
-    console.log('editar')
+    //console.log('editar')
     this.dialogRef.close({mode: 'editar', ...this.data});
    }
 

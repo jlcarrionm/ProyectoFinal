@@ -38,7 +38,7 @@ export class AppComponent {
    }
 
    redigirAlumnos(){
-    console.log('redigirAlumnos')
+   // console.log('redigirAlumnos')
     this.router.navigate(['inicio', {mesaje: 'Bienvenidos'}])
    }
 

@@ -72,7 +72,7 @@ export class AlumnosService {
   ) {
 
     this.alumnos$ = new BehaviorSubject(this.alumnos);
-console.log('this.alumnos$',this.alumnos$)
+//console.log('this.alumnos$',this.alumnos$)
 
   }
 

@@ -36,7 +36,7 @@ export class ListaAlumnosComponent implements OnInit, OnDestroy {
 
     this.dataSource = new MatTableDataSource<Alumnos>();
     this.suscripcion = this.alumnosService.obtenerAlumnosObservable$().subscribe((alumnos: Alumnos[]) => {
-      console.log("Agregando datos al MatTAbleDataSource");
+      //console.log("Agregando datos al MatTAbleDataSource");
       this.dataSource.data = alumnos;
       this.alumnos=alumnos;
 
@@ -53,7 +53,7 @@ export class ListaAlumnosComponent implements OnInit, OnDestroy {
 
   abrirModal(alumno: any){
     this.alumnoSeleccionado = this.alumnos[this.alumnos.findIndex((alumnoActual) => alumnoActual.ci === alumno.ci)];
-    console.log("Alumno", this.alumnoSeleccionado)
+    //console.log("Alumno", this.alumnoSeleccionado)
     const dialogRef = this.dialog.open(EditarAlumnosDialogComponent, {
       data: alumno
     });
@@ -68,11 +68,11 @@ export class ListaAlumnosComponent implements OnInit, OnDestroy {
      // console.log("AlumnoActulizado", this.alumnos);
  this.alumnos = this.alumnos.map((alumnoActual: Alumnos) =>{
    if(alumnoActual.ci === result.ci){
- console.log('Result',result.mode)
+ //console.log('Result',result.mode)
 
      delete result.mode;
 
-     console.log('Result',result.mode)
+     //console.log('Result',result.mode)
 
      return alumnoActual = result
    }else{
@@ -85,7 +85,7 @@ export class ListaAlumnosComponent implements OnInit, OnDestroy {
 
   eliminarRegistro(ci: any){
 
-    console.log("cedula", ci)
+    //console.log("cedula", ci)
  /*   this.alumnos.splice( this.alumnos.findIndex((alumnoActual) => alumnoActual.ci === ci),1)
 
     console.log("Delete", this.alumnos)
