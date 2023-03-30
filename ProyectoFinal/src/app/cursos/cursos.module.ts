@@ -5,6 +5,10 @@ import { MaterialModule } from '../material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CursosRountingModule } from './cursos-rounting.module';
 import { CursoService } from './services/cursos.service';
+import { cursoStateFeatureKey, reducer } from './curso-state.reducer';
+import { StoreModule } from '@ngrx/store';
+
+
 
 
 
@@ -18,7 +22,9 @@ import { CursoService } from './services/cursos.service';
     MaterialModule,
     ReactiveFormsModule,
     FormsModule,
-    CursosRountingModule
+    CursosRountingModule,
+    StoreModule.forFeature(cursoStateFeatureKey, reducer)
+
   ],
 providers: [
   CursoService

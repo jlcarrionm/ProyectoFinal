@@ -1,0 +1,6 @@
+{
+    "usuarios": [
+        { "usuario": "jcarrion", "contrasena": "12345", "esAdmin": true },
+        { "usuario": "rommel", "contrasena": "asd.123", "esAdmin": false }
+    ]
+}

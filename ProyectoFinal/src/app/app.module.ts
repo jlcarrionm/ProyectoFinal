@@ -42,7 +42,8 @@ import { ROOT_REDUCERS } from './core/state/state/app.state';
     AppRountingModule,
     CoreModule,
     SharedModule,
-    StoreModule.forRoot(ROOT_REDUCERS)
+   // StoreModule.forRoot(ROOT_REDUCERS)
+   StoreModule.forRoot({}, {}),
   ],
   providers: [
 

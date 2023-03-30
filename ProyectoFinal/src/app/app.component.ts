@@ -51,7 +51,7 @@ export class AppComponent {
       sesionActiva: false,
       usuarioActivo: undefined
     }
-    this.sesion.logout(sesionLogout);
+   // this.sesion.logout(sesionLogout);
     this.router.navigate(['auth/login']);
   }
 

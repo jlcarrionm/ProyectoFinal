@@ -4,9 +4,9 @@ import { Observable, Subscription, takeUntil, Subject, from, map, of, filter, me
 
 import { Cursos } from '../../../models/cursos';
 import { CursoService } from '../../services/cursos.service';
-import { AppState } from '../../../core/state/state/app.state';
-import { cargarCursos, cursosCargados } from 'src/app/core/state/state/cursos.actions';
-import { selectorCargandoCursos, selectorCursosCargados } from 'src/app/core/state/state/cursos.selectors';
+import { selectCargandoCursos, selectCursosCargados } from '../../curso-state.selectors';
+import { cargarCursoState, cursosCargados } from '../../curso-state.actions';
+import { CursoState } from '../../curso-state.reducer';
 
 @Component({
   selector: 'app-lista-cursos',
@@ -30,13 +30,14 @@ export class ListaCursosComponent implements OnInit{
 
   constructor(
     private cursoService: CursoService,
-    private store: Store<AppState>
+   // private store: Store<AppState>
+   private store: Store<CursoState>
   ){
 
   }
 
   ngOnInit() {
-    this.cargando$ = this.store.select(selectorCargandoCursos);
+  /*   this.cargando$ = this.store.select(selectorCargandoCursos);
 
     this.store.dispatch(cargarCursos());
    // this.cursos$ = this.cursoService.obtenerCursosObservable$();
@@ -45,6 +46,18 @@ export class ListaCursosComponent implements OnInit{
   });
 
   this.cursos$ = this.store.select(selectorCursosCargados);
+ */
+
+  this.cargando$ = this.store.select(selectCargandoCursos);
+
+  this.store.dispatch(cargarCursoState());
+
+  this.cursoService.obtenerCursosObservable$().subscribe((cursos: Cursos[]) => {
+    this.store.dispatch(cursosCargados({ cursos: cursos }));
+  });
+
+  this.cursos$ = this.store.select(selectCursosCargados);
+
 
    /*  this.suscripcion = this.cursos$
       .pipe(takeUntil(this.destroy$))
