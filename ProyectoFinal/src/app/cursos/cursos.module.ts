@@ -5,13 +5,11 @@ import { MaterialModule } from '../material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CursosRountingModule } from './cursos-rounting.module';
 import { CursoService } from './services/cursos.service';
-import { cursoStateFeatureKey, reducer } from './curso-state.reducer';
+import { cursoStateFeatureKey, reducer } from './state/curso-state.reducer';
 import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 
-
-
-
-
+import { CursosEffects } from './state/curso-state.effects';
 
 @NgModule({
   declarations: [
@@ -23,7 +21,8 @@ import { StoreModule } from '@ngrx/store';
     ReactiveFormsModule,
     FormsModule,
     CursosRountingModule,
-    StoreModule.forFeature(cursoStateFeatureKey, reducer)
+    StoreModule.forFeature(cursoStateFeatureKey, reducer),
+    EffectsModule.forFeature([CursosEffects])
 
   ],
 providers: [

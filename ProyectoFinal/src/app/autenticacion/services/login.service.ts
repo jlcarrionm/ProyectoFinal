@@ -22,6 +22,7 @@ export class LoginService {
       usuarioActivo: usuario
     }; */
 
+
     //  this.sesion.crearSesion(sesion);
     return this.http.get<Usuario[]>(`${env.authURL}/usuarios`).pipe(
       map((usuarios: Usuario[]) => {
@@ -35,8 +36,10 @@ export class LoginService {
 
           return sesion
         }else{
+
           const sesion: Sesion = {
-            sesionActiva: false
+            sesionActiva: false,
+
           }
 
           return sesion
@@ -44,7 +47,5 @@ export class LoginService {
       })
     );
   }
-
-
   }
 

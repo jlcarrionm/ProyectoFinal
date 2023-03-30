@@ -1,5 +1,6 @@
 import {  createReducer, on } from '@ngrx/store';
-import { Cursos } from '../models/cursos';
+import { Cursos } from 'src/app/models/cursos';
+
 import * as CursoStateActions from './curso-state.actions';
 
 
@@ -22,5 +23,14 @@ export const reducer = createReducer(
   }),
   on(CursoStateActions.cursosCargados, (state, { cursos }) => {
     return {...state, cargando: false, cursos};
-  })
+  }),
+  on(CursoStateActions.agregarCursoState, (state, { curso: Curso }) => {
+    return state;
+  }),
+  on(CursoStateActions.editarCursoState, (state, { curso: Curso }) => {
+    return state;
+  }),
+  on(CursoStateActions.eliminarCursoState, (state, { curso: Curso }) => {
+    return state;
+  }),
 );

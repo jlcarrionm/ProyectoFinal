@@ -1,7 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
-import { Usuario } from 'src/app/models/usuario';
+import { Component } from '@angular/core';
+
 
 @Component({
   selector: 'app-inicio',

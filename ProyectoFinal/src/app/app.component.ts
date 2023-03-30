@@ -1,17 +1,24 @@
 import { MediaMatcher } from '@angular/cdk/layout';
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { AuthState } from './autenticacion/state/state/auth.reducer';
+import { selectSesionActiva, selectUsuarioActivo } from './autenticacion/state/state/auth.selectors';
 import { SesionService } from './core/services/sesion.service';
 import { Sesion } from './models/sesion';
+import { Usuario } from './models/usuario';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'ProyectoFinal';
   mobileQuery: MediaQueryList;
+  sesionActiva$!: Observable<Boolean>;
+  usuarioActivo$!: Observable<Usuario | undefined>;
 
 
   /*  fillerNav = Array.from({length: 50}, (_, i) => `Nav Item ${i + 1}`);
@@ -28,7 +35,10 @@ export class AppComponent {
 
    private _mobileQueryListener: () => void;
 
-   constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher,private router: Router,
+   constructor(changeDetectorRef: ChangeDetectorRef,
+    media: MediaMatcher,
+    private router: Router,
+    private authStore: Store<AuthState>,
 
     private sesion: SesionService ) {
 
@@ -36,6 +46,13 @@ export class AppComponent {
      this._mobileQueryListener = () => changeDetectorRef.detectChanges();
      this.mobileQuery.addListener(this._mobileQueryListener);
    }
+
+   ngOnInit(): void {
+    //console.log('paso')
+    this.sesionActiva$ = this.authStore.select(selectSesionActiva);
+    this.usuarioActivo$ = this.authStore.select(selectUsuarioActivo);
+  }
+
 
    redigirAlumnos(){
    // console.log('redigirAlumnos')

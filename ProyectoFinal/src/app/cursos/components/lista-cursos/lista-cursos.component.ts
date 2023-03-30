@@ -4,9 +4,10 @@ import { Observable, Subscription, takeUntil, Subject, from, map, of, filter, me
 
 import { Cursos } from '../../../models/cursos';
 import { CursoService } from '../../services/cursos.service';
-import { selectCargandoCursos, selectCursosCargados } from '../../curso-state.selectors';
-import { cargarCursoState, cursosCargados } from '../../curso-state.actions';
-import { CursoState } from '../../curso-state.reducer';
+import { selectCargandoCursos, selectCursosCargados } from '../../state/curso-state.selectors';
+import { cargarCursoState, cursosCargados, eliminarCursoState } from '../../state/curso-state.actions';
+import { CursoState } from '../../state/curso-state.reducer';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-lista-cursos',
@@ -25,13 +26,15 @@ export class ListaCursosComponent implements OnInit{
 
   private myArrayOf$!: Observable<Cursos[]>;
 
+
 /*   srcObject = from(this.cursos
     ); */
 
   constructor(
     private cursoService: CursoService,
    // private store: Store<AppState>
-   private store: Store<CursoState>
+   private store: Store<CursoState>,
+   private snackBar: MatSnackBar
   ){
 
   }
@@ -52,9 +55,9 @@ export class ListaCursosComponent implements OnInit{
 
   this.store.dispatch(cargarCursoState());
 
-  this.cursoService.obtenerCursosObservable$().subscribe((cursos: Cursos[]) => {
+/*   this.cursoService.obtenerCursosObservable$().subscribe((cursos: Cursos[]) => {
     this.store.dispatch(cursosCargados({ cursos: cursos }));
-  });
+  }); */
 
   this.cursos$ = this.store.select(selectCursosCargados);
 
@@ -106,10 +109,12 @@ export class ListaCursosComponent implements OnInit{
     }
 
     eliminarCurso(curso: Cursos){
-      this.cursoService.eliminarCurso(curso).subscribe((curso: Cursos) => {
+    /*   this.cursoService.eliminarCurso(curso).subscribe((curso: Cursos) => {
         alert(`${curso.nombre} eliminado`);
         this.cursos$ = this.cursoService.obtenerCursosObservable$();
-      });
+      }); */
+      this.snackBar.open(`${curso.nombre} eliminado satisfactoriamente`);
+      this.store.dispatch(eliminarCursoState({ curso }));
     }
 
   busqueda(){
