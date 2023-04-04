@@ -116,6 +116,26 @@ export class CursoService {
     );
   }
 
+   agregarCurso(curso: Cursos): Observable<Cursos>{
+    return this.http.post<Cursos>(`${env.apiURL}/cursos`, curso, {
+      headers: new HttpHeaders({
+        'encoding': 'UTF-8'
+      })
+    }).pipe(
+      catchError(this.capturarError)
+    );
+  }
+
+  editarCurso(curso: Cursos): Observable<Cursos>{
+    return this.http.put<Cursos>(`${env.apiURL}/cursos/${curso.id}`, curso, {
+      headers: new HttpHeaders({
+        'usuario': 'Abner'
+      })
+    }).pipe(
+      catchError(this.capturarError)
+    );
+  }
+
 
   /* obtenerCurso(cursoVariable: string): Promise<Cursos[]>{
     //this.cursos.push(this.http.get<Cursos[]>(`${env.apiURL}/cursos`))

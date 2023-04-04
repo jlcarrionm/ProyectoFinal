@@ -26,6 +26,7 @@ import { InicioComponent } from './core/components/inicio/inicio.component';
 import { StoreModule } from '@ngrx/store';
 import { ROOT_REDUCERS } from './core/state/state/app.state';
 import { EffectsModule } from '@ngrx/effects';
+import { authFeatureKey, authReducer } from './autenticacion/state/state/auth.reducer';
 
 
 
@@ -45,7 +46,8 @@ import { EffectsModule } from '@ngrx/effects';
     SharedModule,
    // StoreModule.forRoot(ROOT_REDUCERS)
    StoreModule.forRoot({}, {}),
-   EffectsModule.forRoot([])
+   EffectsModule.forRoot([]),
+   StoreModule.forFeature(authFeatureKey, authReducer)
   ],
   providers: [
 

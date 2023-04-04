@@ -30,16 +30,24 @@ export class SesionGuard implements CanActivate, CanActivateChild, CanLoad {
           }
         })
       ); */
+
       route: ActivatedRouteSnapshot,
       state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
       return this.authStore.select(selectSesionState).pipe(
-        map((sesion: Sesion) => {
-          if(sesion.sesionActiva){
+        map((sesion: Sesion) =>  {
+
+         // console.log('sddd' ,sesion);
+
+
+          if( sesion.sesionActiva){
+
             return true;
           }else{
             this.router.navigate(['auth/login']);
             return false;
           }
+
+
         })
       );
   }
@@ -60,7 +68,9 @@ export class SesionGuard implements CanActivate, CanActivateChild, CanLoad {
       state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
         return this.authStore.select(selectSesionState).pipe(
           map((sesion: Sesion) => {
-            if(sesion.sesionActiva){
+
+            if( sesion.sesionActiva){
+             // this.router.navigate(['auth/login']);
               return true;
             }else{
               this.router.navigate(['auth/login']);
@@ -87,7 +97,11 @@ export class SesionGuard implements CanActivate, CanActivateChild, CanLoad {
   segments: UrlSegment[]): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     return this.authStore.select(selectSesionState).pipe(
       map((sesion: Sesion) => {
-        if(sesion.sesionActiva){
+
+       // console.log('x',sesion)
+
+        if( sesion.sesionActiva){
+        //  this.router.navigate(['auth/login']);
           return true;
         }else{
           this.router.navigate(['auth/login']);

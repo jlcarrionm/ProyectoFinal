@@ -8,6 +8,7 @@ import { selectSesionActiva, selectUsuarioActivo } from './autenticacion/state/s
 import { SesionService } from './core/services/sesion.service';
 import { Sesion } from './models/sesion';
 import { Usuario } from './models/usuario';
+import { cargarSesion } from './autenticacion/state/state/auth.actions';
 
 @Component({
   selector: 'app-root',
@@ -49,6 +50,7 @@ export class AppComponent implements OnInit {
 
    ngOnInit(): void {
     //console.log('paso')
+    //this.authStore.dispatch(cargarSesion({sesion: { sesionActiva: false }}));
     this.sesionActiva$ = this.authStore.select(selectSesionActiva);
     this.usuarioActivo$ = this.authStore.select(selectUsuarioActivo);
   }

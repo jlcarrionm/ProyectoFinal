@@ -6,6 +6,11 @@ import { Observable, Subject, Subscription, takeUntil } from 'rxjs';
 import { Alumnos } from '../../../models/alumnos';
 import { AlumnosService } from '../../services/alumnos.service';
 import { EditarAlumnosDialogComponent } from '../editar-alumnos-dialog/editar-alumnos-dialog.component';
+import { Router } from '@angular/router';
+import { Sesion } from 'src/app/models/sesion';
+import { AuthState } from 'src/app/autenticacion/state/state/auth.reducer';
+import { Store } from '@ngrx/store';
+import { selectSesionState } from 'src/app/autenticacion/state/state/auth.selectors';
 
 @Component({
   selector: 'app-lista-alumnos',
@@ -22,10 +27,13 @@ export class ListaAlumnosComponent implements OnInit, OnDestroy {
   alumnos!: Alumnos[];
   suscripcion!: Subscription;
   private destroy$ = new Subject<any>();
+  sesion$!: Observable<Sesion>
 
   constructor(
     private alumnosService: AlumnosService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private router: Router,
+    private storeAuth: Store<AuthState>,
 
   ){
 
@@ -34,6 +42,7 @@ export class ListaAlumnosComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
+    this.sesion$ = this.storeAuth.select(selectSesionState);
     this.dataSource = new MatTableDataSource<Alumnos>();
     this.suscripcion = this.alumnosService.obtenerAlumnosObservable$().subscribe((alumnos: Alumnos[]) => {
       //console.log("Agregando datos al MatTAbleDataSource");
@@ -83,17 +92,33 @@ export class ListaAlumnosComponent implements OnInit, OnDestroy {
      })
    }
 
-  eliminarRegistro(ci: any){
+  eliminarRegistro(alumno: Alumnos){
 
-    //console.log("cedula", ci)
- /*   this.alumnos.splice( this.alumnos.findIndex((alumnoActual) => alumnoActual.ci === ci),1)
 
-    console.log("Delete", this.alumnos)
+  //  this.alumnosService.eliminarAlumno(ci);
 
-    this.dataSource = new MatTableDataSource<Alumnos>(this.alumnos)
- */
-    this.alumnosService.eliminarAlumno(ci);
 
+        this.alumnosService.eliminarCurso(alumno).subscribe((alumno: Alumnos) => {
+          alert(`${alumno.nombre} eliminado`);
+         // this.alumnos$  = this.alumnosService.obtenerAlumnosObservable$();
+         this.dataSource = new MatTableDataSource<Alumnos>();
+          this.suscripcion = this.alumnosService.obtenerAlumnosObservable$().subscribe((alumnos: Alumnos[]) => {
+            //console.log("Agregando datos al MatTAbleDataSource");
+            this.dataSource.data = alumnos;
+            this.alumnos=alumnos;
+
+          });
+        });
+
+
+
+
+
+  }
+
+
+  agregarAlumno(){
+    this.router.navigate(['alumnos/agregarAlumno']);
   }
 
   ngOnDestroy(): void {

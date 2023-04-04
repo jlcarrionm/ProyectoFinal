@@ -7,6 +7,7 @@ import { LoginComponent } from './components/login/login.component';
 import { SharedModule } from '../shared/shared.module';
 import { StoreModule } from '@ngrx/store';
 import { authFeatureKey, authReducer } from './state/state/auth.reducer';
+import { reducer } from '../cursos/state/curso-state.reducer';
 
 
 @NgModule({

@@ -12,12 +12,13 @@ export const initialState: AuthState = {
   sesion: {
     sesionActiva: false
   }
+
 };
 
 export const authReducer = createReducer(
   initialState,
   on(AuthActions.cargarSesion, (state, { sesion }) => {
     return {...state, sesion: {sesionActiva: true, usuarioActivo: sesion.usuarioActivo}}
-  }),
+  })
 
 );

@@ -8,6 +8,14 @@ import { selectCargandoCursos, selectCursosCargados } from '../../state/curso-st
 import { cargarCursoState, cursosCargados, eliminarCursoState } from '../../state/curso-state.actions';
 import { CursoState } from '../../state/curso-state.reducer';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+import { Sesion } from 'src/app/models/sesion';
+import { SesionService } from 'src/app/core/services/sesion.service';
+import { MatDialog } from '@angular/material/dialog';
+import { EditarCursoComponent } from '../editar-curso/editar-curso.component';
+import { AuthState } from 'src/app/autenticacion/state/state/auth.reducer';
+import { cargarSesion } from 'src/app/autenticacion/state/state/auth.actions';
+import { selectSesionState, selectUsuarioActivo } from 'src/app/autenticacion/state/state/auth.selectors';
 
 @Component({
   selector: 'app-lista-cursos',
@@ -23,6 +31,7 @@ export class ListaCursosComponent implements OnInit{
   comision: string = '';
   profesor: string = '';
   cargando$!: Observable<Boolean>;
+  sesion$!: Observable<Sesion>
 
   private myArrayOf$!: Observable<Cursos[]>;
 
@@ -34,7 +43,12 @@ export class ListaCursosComponent implements OnInit{
     private cursoService: CursoService,
    // private store: Store<AppState>
    private store: Store<CursoState>,
-   private snackBar: MatSnackBar
+   private snackBar: MatSnackBar,
+   private router: Router,
+   private sesion: SesionService,
+   private dialog: MatDialog,
+
+   private storeAuth: Store<AuthState>,
   ){
 
   }
@@ -51,7 +65,9 @@ export class ListaCursosComponent implements OnInit{
   this.cursos$ = this.store.select(selectorCursosCargados);
  */
 
+
   this.cargando$ = this.store.select(selectCargandoCursos);
+
 
   this.store.dispatch(cargarCursoState());
 
@@ -70,7 +86,14 @@ export class ListaCursosComponent implements OnInit{
 
   this.numberCurso = value.length;
 });
+//this.sesion$ = this.sesion.obtenerSesion();
 
+this.sesion$ = this.storeAuth.select(selectSesionState);
+
+/* this.sesion$.subscribe((value) => {
+
+ console.log('sesision', value.usuarioActivo?.esAdmin)
+}); */
 
    /*  of(this.cursos).subscribe((cursos)=> {
       console.log('Obtenido desde el Of', cursos)
@@ -135,4 +158,19 @@ export class ListaCursosComponent implements OnInit{
     this.destroy$.complete();
 
   } */
+
+  agregarCurso(){
+    this.router.navigate(['cursos/agregarCursos']);
+
+
+
+  }
+  abrirDialog(curso: Cursos){
+    this.dialog.open(EditarCursoComponent, {
+      data: curso
+    }).afterClosed().subscribe((curso: Cursos) => {
+      alert(`${curso.nombre} editado satisfactoriamente`);
+      this.cursos$ = this.cursoService.obtenerCursosObservable$();
+    });
+  }
 }

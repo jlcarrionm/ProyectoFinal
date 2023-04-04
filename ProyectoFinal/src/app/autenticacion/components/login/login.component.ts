@@ -48,7 +48,12 @@ export class LoginComponent implements OnInit, OnDestroy {
    // this.loginService.login(usuario);
    this.suscripcion = this.loginService.login(usuario).subscribe((sesion: Sesion) => {
     this.authStore.dispatch(cargarSesion({ sesion: sesion }));
-    this.router.navigate(['inicio']);
+
+    if(sesion.sesionActiva === true){
+
+      this.router.navigate(['inicio']);
+    }
+
   });
 
 

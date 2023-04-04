@@ -8,6 +8,7 @@ import { ConcatenarNombreApellidoPipe } from './pipes/concatenar-nombre-apellido
 import { TamanoTitulosDirective } from './directives/tamano-titulos.directive';
 import { EditarAlumnosDialogComponent } from './components/editar-alumnos-dialog/editar-alumnos-dialog.component';
 import { AlumnosService } from './services/alumnos.service';
+import { AgregarAlumnoComponent } from './components/agregar-alumno/agregar-alumno.component';
 
 
 @NgModule({
@@ -16,6 +17,7 @@ import { AlumnosService } from './services/alumnos.service';
     ConcatenarNombreApellidoPipe,
     TamanoTitulosDirective,
     EditarAlumnosDialogComponent,
+    AgregarAlumnoComponent,
   ],
   imports: [
     CommonModule,

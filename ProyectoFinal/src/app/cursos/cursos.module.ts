@@ -10,10 +10,14 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 
 import { CursosEffects } from './state/curso-state.effects';
+import { AgregarCursosComponent } from './components/agregar-cursos/agregar-cursos.component';
+import { EditarCursoComponent } from './components/editar-curso/editar-curso.component';
 
 @NgModule({
   declarations: [
-    ListaCursosComponent
+    ListaCursosComponent,
+    AgregarCursosComponent,
+    EditarCursoComponent
   ],
   imports: [
     CommonModule,

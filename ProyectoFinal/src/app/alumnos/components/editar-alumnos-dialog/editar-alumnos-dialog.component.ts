@@ -58,9 +58,13 @@ export class EditarAlumnosDialogComponent {
    editar(){
     //console.log('editar')
     this.dialogRef.close({mode: 'editar', ...this.data});
+
    }
 
    onNoClick(): void {
     this.dialogRef.close();
   }
+
+
+
 }

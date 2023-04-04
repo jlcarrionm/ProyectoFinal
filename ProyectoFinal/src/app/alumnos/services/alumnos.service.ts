@@ -1,74 +1,16 @@
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, throwError } from 'rxjs';
 import { Alumnos } from 'src/app/models/alumnos';
+import { env } from 'src/environment/environments';
 
 @Injectable()
 export class AlumnosService {
-  private alumnos: Alumnos[] = [
-    {
-      nombre: 'Jose',
-      apellido: 'Carrion',
-      email: 'jlcarrion90@gmail.com',
-      ci: '0927509118',
-      domicilio: 'Guayaquil',
-      telefono: '042344710',
-     /*  cursos: {
-        nombre: 'Angular',
-        comision: '49533',
-        profesor: {
-          nombre: 'Luis',
-          apellido: 'Molineros',
-          correo: 'Luisr@gmail.com'
-      },
-      fechaInicio: new Date(2023, 0, 1, 20, 30, 0),
-      fechaFin: new Date(2023, 0, 31, 20, 30, 0),
-      inscripcionAbierta: true
-      }, */
-    },
-    {
-      nombre: 'Luciana',
-      apellido: 'Aldas',
-      email: 'lualdas@gmail.com',
-      ci: '0927509999',
-      domicilio: 'Ambato',
-      telefono: '042344711',
-      /* cursos: {
-        nombre: 'Ionic',
-        comision: '49999',
-        profesor: {
-          nombre: 'Francisco',
-          apellido: 'Gallo',
-          correo: 'Fgallo@gmail.com'
-      },
-      fechaInicio: new Date(2023, 0, 1, 20, 30, 0),
-      fechaFin: new Date(2023, 0, 31, 20, 30, 0),
-      inscripcionAbierta: true
-      }, */
-    },
-    {
-      nombre: 'Sara',
-      apellido: 'Ushina',
-      email: 'sara@gmail.com',
-      ci: '2315486987',
-      domicilio: 'Guayaquil',
-      telefono: '042458796',
-     /*  cursos: {
-        nombre: 'SQL',
-        comision: '50000',
-        profesor: {
-          nombre: 'Omar',
-          apellido: 'Rodrigueaz',
-          correo: 'orodriguez@gmail.com'
-      },
-      fechaInicio: new Date(2023, 0, 1, 20, 30, 0),
-      fechaFin: new Date(2023, 0, 31, 20, 30, 0),
-      inscripcionAbierta: true
-      }, */
-    }
-  ]
+  private  alumnos: Alumnos[]=[]
+
   private alumnos$!: BehaviorSubject<Alumnos[]>;
   constructor(
-
+    private http: HttpClient
   ) {
 
     this.alumnos$ = new BehaviorSubject(this.alumnos);
@@ -76,16 +18,62 @@ export class AlumnosService {
 
   }
 
-  obtenerAlumnosObservable$(): Observable<Alumnos[]>{
+/*   obtenerAlumnosObservable$(): Observable<Alumnos[]>{
 
     return this.alumnos$.asObservable();
-  }
+  } */
 
   eliminarAlumno(ci: any){
     this.alumnos.splice( this.alumnos.findIndex((alumnoActual) => alumnoActual.ci === ci),1)
    // console.log('eliminarAlumno',this.alumnos)
     this.alumnos$.next( this.alumnos);
 
+  }
+
+  agregarAlumno(alumno: Alumnos): Observable<Alumnos>{
+    return this.http.post<Alumnos>(`${env.apiURL}/alumnos`, alumno, {
+      headers: new HttpHeaders({
+        'encoding': 'UTF-8'
+      })
+    }).pipe(
+      catchError(this.capturarError)
+    );
+  }
+
+  obtenerAlumnosObservable$(): Observable<Alumnos[]>{
+
+
+    return this.http.get<Alumnos[]>(`${env.apiURL}/alumnos`, {
+     headers: new HttpHeaders({
+       'content-type': 'application/json',
+       'encoding': 'UTF-8'
+     })
+   }).pipe(
+     catchError(this.capturarError)
+   );
+
+   }
+
+
+  eliminarCurso(alumno: Alumnos): Observable<Alumnos>{
+    return this.http.delete<Alumnos>(`${env.apiURL}/alumnos/${alumno.id}`, {
+      headers: new HttpHeaders({
+        'curso': 'Angular'
+      })
+    }).pipe(
+      catchError(this.capturarError)
+    );
+  }
+
+
+  private capturarError(error: HttpErrorResponse){
+    if(error.error instanceof ErrorEvent){
+      alert(`Hubo un error del lado del cliente: ${error.message}`);
+    }else{
+      alert(`Hubo un error del lado del servidor: ${error.message}`);
+    }
+
+    return throwError(() => new Error('Error en el procesamiento de Alumnos'));
   }
 
 

@@ -12,7 +12,7 @@ import { env } from 'src/environment/environments';
 export class LoginService {
 
   constructor(
-    private sesion: SesionService,
+    //private sesion: SesionService,
     private http: HttpClient
   ) { }
 
@@ -24,16 +24,18 @@ export class LoginService {
 
 
     //  this.sesion.crearSesion(sesion);
+    //console.log('paso')
     return this.http.get<Usuario[]>(`${env.authURL}/usuarios`).pipe(
       map((usuarios: Usuario[]) => {
         let usuarioValidado = usuarios.find((u: Usuario) => u.usuario === usuario.usuario && u.contrasena === usuario.contrasena);
 
+       // console.log('Paso', usuarioValidado )
         if(usuarioValidado){
           const sesion: Sesion = {
             sesionActiva: true,
             usuarioActivo: usuarioValidado
           }
-
+         // console.log('Paso1' )
           return sesion
         }else{
 
@@ -41,7 +43,7 @@ export class LoginService {
             sesionActiva: false,
 
           }
-
+        // console.log('Paso2' )
           return sesion
         }
       })
