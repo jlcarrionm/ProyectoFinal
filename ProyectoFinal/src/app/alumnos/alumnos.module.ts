@@ -9,6 +9,11 @@ import { TamanoTitulosDirective } from './directives/tamano-titulos.directive';
 import { EditarAlumnosDialogComponent } from './components/editar-alumnos-dialog/editar-alumnos-dialog.component';
 import { AlumnosService } from './services/alumnos.service';
 import { AgregarAlumnoComponent } from './components/agregar-alumno/agregar-alumno.component';
+import { EffectsModule } from '@ngrx/effects';
+import { AlumnosStateEffects } from './state/alumnos-state.effects';
+import { StoreModule } from '@ngrx/store';
+import { alumnosStateFeatureKey, reducer } from './state/alumnos-state.reducer';
+
 
 
 @NgModule({
@@ -25,6 +30,9 @@ import { AgregarAlumnoComponent } from './components/agregar-alumno/agregar-alum
     MaterialModule,
     ReactiveFormsModule,
     FormsModule,
+    StoreModule.forFeature(alumnosStateFeatureKey, reducer),
+    EffectsModule.forFeature([AlumnosStateEffects]),
+
 
   ],
   providers: [

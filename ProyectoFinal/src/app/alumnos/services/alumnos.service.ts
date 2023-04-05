@@ -40,6 +40,18 @@ export class AlumnosService {
     );
   }
 
+
+  editarAlumno(alumno: Alumnos): Observable<Alumnos>{
+   // console.log('servicio',alumno)
+    return this.http.put<Alumnos>(`${env.apiURL}/alumnos/${alumno.id}`, alumno, {
+      headers: new HttpHeaders({
+        'usuario': 'Abner'
+      })
+    }).pipe(
+      catchError(this.capturarError)
+    );
+  }
+
   obtenerAlumnosObservable$(): Observable<Alumnos[]>{
 
 

@@ -3,6 +3,9 @@ import { AlumnosService } from '../../services/alumnos.service';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Alumnos } from 'src/app/models/alumnos';
+import { agregarAlumnoState } from '../../state/alumnos-state.actions';
+import { AlumnosState } from '../../state/alumnos-state.reducer';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-agregar-alumno',
@@ -15,6 +18,7 @@ export class AgregarAlumnoComponent  implements OnInit {
     private alumnosService: AlumnosService,
 
     private router: Router,
+    private store: Store<AlumnosState>,
 
   ){
 
@@ -46,10 +50,13 @@ agregarAlumno(){
     telefono: this.formulario.value.telefono
 
   }
-  this.alumnosService.agregarAlumno(alumno).subscribe((alumno: Alumnos) => {
+/*   this.alumnosService.agregarAlumno(alumno).subscribe((alumno: Alumnos) => {
     alert(`${alumno.nombre} agregado satisfactoriamente`);
     this.router.navigate(['alumnos/listaralumnos']);
-  });
+  }); */
+
+
+  this.store.dispatch(agregarAlumnoState({ alumnos: alumno }));
 
 }
 }

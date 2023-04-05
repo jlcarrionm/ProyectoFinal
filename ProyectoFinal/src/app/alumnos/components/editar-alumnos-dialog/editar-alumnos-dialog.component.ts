@@ -2,6 +2,9 @@ import { Component, EventEmitter, Inject, Optional, Output } from '@angular/core
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Alumnos } from '../../../models/alumnos';
+import { editarAlumnoState } from '../../state/alumnos-state.actions';
+import { AlumnosState } from '../../state/alumnos-state.reducer';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-editar-alumnos-dialog',
@@ -9,12 +12,15 @@ import { Alumnos } from '../../../models/alumnos';
   styleUrls: ['./editar-alumnos-dialog.component.css']
 })
 export class EditarAlumnosDialogComponent {
+  formulario!: FormGroup;
+
   /* formulario: FormGroup; */
   /* @Output() eventoSalidaAlumno:  EventEmitter<Alumnos> = new  EventEmitter<Alumnos>; */
 
   constructor(
     @Optional() public dialogRef: MatDialogRef<EditarAlumnosDialogComponent>,
-    @Inject( MAT_DIALOG_DATA) public data: Alumnos
+    @Inject( MAT_DIALOG_DATA) public alumno: Alumnos,
+    private store: Store<AlumnosState>,
 
   ){
    /*  this.formulario = new FormGroup({
@@ -55,11 +61,44 @@ export class EditarAlumnosDialogComponent {
    /* this.eventoSalidaAlumno.emit(alumno);
    console.log('editarAlumno',alumno);} */
 
-   editar(){
+   ngOnInit(): void {
+    // this.profesores$ = this.profesores.obtenerProfesores();
+     this.formulario = new FormGroup({
+       nombre: new FormControl(this.alumno.nombre),
+       apellido: new FormControl(this.alumno.apellido),
+       ci: new FormControl(this.alumno.ci),
+       email: new FormControl(this.alumno.email),
+       domicilio: new FormControl(this.alumno.domicilio),
+       telefono: new FormControl(this.alumno.telefono)
+     })
+   }
+
+
+
+/*    editar(){
     //console.log('editar')
     this.dialogRef.close({mode: 'editar', ...this.data});
 
-   }
+   } */
+
+
+editar(){
+  let alumno: Alumnos = {
+    id: this.alumno.id,
+    nombre: this.formulario.value.nombre,
+    apellido: this.formulario.value.apellido,
+    email: this.formulario.value.email,
+    ci: this.formulario.value.ci,
+    domicilio: this.formulario.value.domicilio,
+    telefono: this.formulario.value.telefono
+
+  }
+  this.store.dispatch(editarAlumnoState({alumnos: alumno}));
+  this.dialogRef.close(alumno);
+
+
+}
+
 
    onNoClick(): void {
     this.dialogRef.close();

@@ -11,29 +11,41 @@ import { Sesion } from 'src/app/models/sesion';
 import { AuthState } from 'src/app/autenticacion/state/state/auth.reducer';
 import { Store } from '@ngrx/store';
 import { selectSesionState } from 'src/app/autenticacion/state/state/auth.selectors';
+import { AlumnosState } from '../../state/alumnos-state.reducer';
+import { selectAlumnosCargados, selectCargandoAlumnos } from '../../state/alumnos-state.selectors';
+import { cargarCursoState } from 'src/app/cursos/state/curso-state.actions';
+import { cargarAlumnosStates, eliminarAlumnoState } from '../../state/alumnos-state.actions';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-lista-alumnos',
   templateUrl: './lista-alumnos.component.html',
   styleUrls: ['./lista-alumnos.component.css']
 })
-export class ListaAlumnosComponent implements OnInit, OnDestroy {
+export class ListaAlumnosComponent implements OnInit {
 
   dataSource!: MatTableDataSource<Alumnos>;
 
   columnas: string[] = ['nombre', 'apellido', 'email', 'ci', 'domicilio', 'telefono', 'acciones'];
   alumnoSeleccionado!: Alumnos;
-  alumnos$!: Observable<Alumnos[]>;
+
   alumnos!: Alumnos[];
   suscripcion!: Subscription;
   private destroy$ = new Subject<any>();
   sesion$!: Observable<Sesion>
+  cargando$!: Observable<Boolean>;
+  Alumnos$!: Observable<Alumnos[]>;
+
+
 
   constructor(
     private alumnosService: AlumnosService,
     public dialog: MatDialog,
     private router: Router,
     private storeAuth: Store<AuthState>,
+    private store: Store<AlumnosState>,
+    private snackBar: MatSnackBar,
+
 
   ){
 
@@ -43,9 +55,21 @@ export class ListaAlumnosComponent implements OnInit, OnDestroy {
   ngOnInit() {
 
     this.sesion$ = this.storeAuth.select(selectSesionState);
+    this.cargando$ = this.store.select(selectCargandoAlumnos);
+
+    this.store.dispatch(cargarAlumnosStates());
+    this.Alumnos$ = this.store.select(selectAlumnosCargados);
+
+
     this.dataSource = new MatTableDataSource<Alumnos>();
-    this.suscripcion = this.alumnosService.obtenerAlumnosObservable$().subscribe((alumnos: Alumnos[]) => {
+   /*  this.suscripcion = this.alumnosService.obtenerAlumnosObservable$().subscribe((alumnos: Alumnos[]) => {
       //console.log("Agregando datos al MatTAbleDataSource");
+      this.dataSource.data = alumnos;
+      this.alumnos=alumnos;
+
+    }); */
+    this.Alumnos$.subscribe((alumnos: Alumnos[]) => {
+     // console.log("Agregando datos al MatTAbleDataSource", alumnos);
       this.dataSource.data = alumnos;
       this.alumnos=alumnos;
 
@@ -60,7 +84,7 @@ export class ListaAlumnosComponent implements OnInit, OnDestroy {
     }
 
 
-  abrirModal(alumno: any){
+ /*  abrirModal(alumno: any){
     this.alumnoSeleccionado = this.alumnos[this.alumnos.findIndex((alumnoActual) => alumnoActual.ci === alumno.ci)];
     //console.log("Alumno", this.alumnoSeleccionado)
     const dialogRef = this.dialog.open(EditarAlumnosDialogComponent, {
@@ -90,15 +114,23 @@ export class ListaAlumnosComponent implements OnInit, OnDestroy {
  })
  this.dataSource = new MatTableDataSource<Alumnos>(this.alumnos)
      })
-   }
+   } */
+   abrirModal(alumno: Alumnos){
+    this.dialog.open(EditarAlumnosDialogComponent, {
+      data: alumno
+    }).afterClosed().subscribe((alumno: Alumnos) => {
+      alert(`${alumno.nombre} editado satisfactoriamente`);
+     // this.cursos$ = this.cursoService.obtenerCursosObservable$();
+    });
+  }
 
-  eliminarRegistro(alumno: Alumnos){
+  eliminarRegistro(alumnos: Alumnos){
 
 
   //  this.alumnosService.eliminarAlumno(ci);
 
 
-        this.alumnosService.eliminarCurso(alumno).subscribe((alumno: Alumnos) => {
+       /*  this.alumnosService.eliminarCurso(alumno).subscribe((alumno: Alumnos) => {
           alert(`${alumno.nombre} eliminado`);
          // this.alumnos$  = this.alumnosService.obtenerAlumnosObservable$();
          this.dataSource = new MatTableDataSource<Alumnos>();
@@ -108,24 +140,18 @@ export class ListaAlumnosComponent implements OnInit, OnDestroy {
             this.alumnos=alumnos;
 
           });
-        });
+        }); */
 
-
-
+        this.snackBar.open(`${alumnos.nombre} eliminado satisfactoriamente`);
+            this.store.dispatch(eliminarAlumnoState({ alumnos }));
 
 
   }
-
 
   agregarAlumno(){
     this.router.navigate(['alumnos/agregarAlumno']);
   }
 
-  ngOnDestroy(): void {
-    this.suscripcion.unsubscribe();
-    this.destroy$.next({});
-    this.destroy$.complete();
 
-  }
 
 }

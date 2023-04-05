@@ -5,6 +5,9 @@ import { Observable } from 'rxjs';
 import { Profesor } from 'src/app/models/profesor';
 import { CursoService } from '../../services/cursos.service';
 import { Cursos } from 'src/app/models/cursos';
+import { CursoState } from '../../state/curso-state.reducer';
+import { Store } from '@ngrx/store';
+import { agregarCursoState } from '../../state/curso-state.actions';
 
 @Component({
   selector: 'app-agregar-cursos',
@@ -19,6 +22,7 @@ export class AgregarCursosComponent implements OnInit{
     private router: Router,
     private cursoService: CursoService,
    // private profesores: ProfesorService
+   private store: Store<CursoState>
   ){}
 
   ngOnInit(): void {
@@ -43,10 +47,13 @@ export class AgregarCursosComponent implements OnInit{
       inscripcionAbierta: this.formulario.value.inscripcionAbierta,
       profesor: this.formulario.value.profesor
     }
-    this.cursoService.agregarCurso(curso).subscribe((curso: Cursos) => {
-      alert(`${curso.nombre} agregado satisfactoriamente`);
-      this.router.navigate(['cursos/listarcursos']);
-    });
+/*     this.cursoService.agregarCurso(curso).subscribe((curso: Cursos) => {
+
+    }); */
+
+    this.store.dispatch(agregarCursoState({ curso: curso }));
+    //alert(`${curso.nombre} agregado satisfactoriamente`);
+    //this.router.navigate(['cursos/listarcursos']);
   }
 
 

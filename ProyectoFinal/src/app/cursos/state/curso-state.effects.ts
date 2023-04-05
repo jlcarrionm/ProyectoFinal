@@ -5,7 +5,7 @@ import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { concatMap, map } from "rxjs";
 import { Cursos } from "src/app/models/cursos";
 import { CursoService } from "../services/cursos.service";
-import { cargarCursoState, cursosCargados, eliminarCursoState } from "./curso-state.actions";
+import { agregarCursoState, cargarCursoState, cursosCargados, editarCursoState, eliminarCursoState } from "./curso-state.actions";
 
 
 @Injectable()
@@ -20,14 +20,15 @@ export class CursosEffects{
             })
         )
     });
-   /*  agregarCurso$ = createEffect(() => {
+
+  agregarCurso$ = createEffect(() => {
         return this.actions$.pipe(
             ofType(agregarCursoState),
             concatMap(({ curso }) => {
                 return this.cursos.agregarCurso(curso).pipe(
-                    map((curso: Curso) => {
+                    map((curso: Cursos) => {
                         this.snackBar.open(`${curso.nombre} agregado satisfactoriamente`);
-                        this.router.navigate(['cursos/listar']);
+                        this.router.navigate(['cursos/listarcursos']);
                         return cargarCursoState();
                     })
                 )
@@ -41,14 +42,16 @@ export class CursosEffects{
             ofType(editarCursoState),
             concatMap(({ curso }) => {
                 return this.cursos.editarCurso(curso).pipe(
-                    map((curso: Curso) => {
+                    map((curso: Cursos) => {
+                      this.snackBar.open(`${curso.nombre} editado satisfactoriamente`);
+                      this.router.navigate(['cursos/listarcursos']);
                         return cargarCursoState();
                     })
                 )
             })
         );
     });
- */
+
     elimninarCurso$ = createEffect(() => {
       return this.actions$.pipe(
           ofType(eliminarCursoState),
